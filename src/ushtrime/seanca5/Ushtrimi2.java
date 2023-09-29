@@ -10,10 +10,10 @@ public class Ushtrimi2 {
         int output = 0;
 
         while (numer != 0) {
+
             int r = numer % 10;
             output = output * 10 + r;
             numer = numer / 10;
-
 
         }
         System.out.println(output);

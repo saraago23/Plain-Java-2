@@ -6,14 +6,13 @@ public class Ushtrimi3 {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         int shuma = 0;
-        int numer = 0;
-
+        System.out.println("Jepni numra: ");
         while (input.hasNextInt()) {
 
-            numer = input.nextInt();
+            int numer = input.nextInt();
             System.out.println(numer);
 
-            if (numer > 9) {
+            if (numer > 9 && numer < 100) {
                 shuma += numer;
 
             }

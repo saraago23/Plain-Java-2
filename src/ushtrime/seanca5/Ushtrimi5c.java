@@ -1,6 +1,6 @@
 package ushtrime.seanca5;
 
-public class Ushtrime5c {
+public class Ushtrimi5c {
     public static void main(String[] args) {
         int rows = 4;
 
