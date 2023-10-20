@@ -39,11 +39,12 @@ public class Ushtrimi7 {
             teBarabarte = true;
 
         }
-
     }
-
         if (!teBarabarte) {
         System.out.println("\nArrayt nuk jane te barabarte");
     }
+
     }
+
+
 }

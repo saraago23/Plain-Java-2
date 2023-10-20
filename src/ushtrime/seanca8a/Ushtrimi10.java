@@ -12,11 +12,11 @@ public class Ushtrimi10 {
 
         for(int i =0;i<array.length;i++){
             for (int j=i+1;j< array.length;j++){
-                int min=0;
+                int temp=0;
                 if(array[i]>array[j]){
-                    min=array[i];
+                    temp=array[i];
                     array[i]=array[j];
-                    array[j]=min;
+                    array[j]=temp;
                 }
             }
         }
