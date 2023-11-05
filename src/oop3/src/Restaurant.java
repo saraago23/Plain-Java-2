@@ -6,10 +6,7 @@ import java.util.List;
 
 public class Restaurant extends AbstractRestaurant {
 
-    /*private List<Dish> dishes;
-    private Customer customer;*/
     private static List<Order> orders = new ArrayList<>();
-
 
     @Override
     public void vendosPorosi(Dish[] dishes, Customer customer) {
@@ -19,7 +16,7 @@ public class Restaurant extends AbstractRestaurant {
         order.setDishes(dishes);
         double cmimiTotalOrderit = 0;
         for (int i = 0; i < order.getDishes().length; i++) {
-            Dish dish = order.getDishes()[i];
+           Dish dish = order.getDishes()[i];
             cmimiTotalOrderit += dish.getCmimi();
         }
         order.setCmimi(cmimiTotalOrderit);

@@ -31,6 +31,7 @@ public class Person {
     }
 
 
+
     public String toString() {
         return " ushtrimi1.Person [emri: " + emer + ", adrese: " + adrese + "]";
     }

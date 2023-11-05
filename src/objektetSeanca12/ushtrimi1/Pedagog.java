@@ -31,4 +31,5 @@ public class Pedagog extends Person {
     public String toString() {
         return super.toString() + "[numer lendesh: " + nrLendesh + ", paga: " + paga + "]";
     }
+
 }
