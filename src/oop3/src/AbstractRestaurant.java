@@ -11,5 +11,6 @@ public abstract class AbstractRestaurant {
     public abstract Customer shfaqCustomerTePorosise(Order order);
 
     public abstract Order shfaqPorosineMeTeShtrenjte();
+    public abstract void eshteApoJoShendetshem(Dish dish);
 
 }
