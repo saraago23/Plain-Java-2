@@ -3,7 +3,7 @@ package oop3.src.bibilioteka;
 public class Libri {
 
     private int id;
-    private static int counter=0;
+    private static int counter = 0;
     private int idPerdorues;
     private String titulli;
     private String autori;
@@ -11,12 +11,12 @@ public class Libri {
     private int vitiBotimit;
     boolean rezervuar;
 
-    public Libri(String titulli, String autori, String isbn, int vitiBotimit){
-        this.id=counter++;
-        this.titulli=titulli;
-        this.autori=autori;
-        this.isbn=isbn;
-        this.vitiBotimit=vitiBotimit;
+    public Libri(String titulli, String autori, String isbn, int vitiBotimit) {
+        this.id = counter++;
+        this.titulli = titulli;
+        this.autori = autori;
+        this.isbn = isbn;
+        this.vitiBotimit = vitiBotimit;
     }
 
     public String getTitulli() {
@@ -78,14 +78,6 @@ public class Libri {
 
     @Override
     public String toString() {
-        return "{"+
-                "id=" + id +
-                ", idPerdorues=" + idPerdorues +
-                ", titulli='" + titulli + '\'' +
-                ", autori='" + autori + '\'' +
-                ", isbn='" + isbn + '\'' +
-                ", vitiBotimit=" + vitiBotimit +
-                ", rezervuar=" + rezervuar +
-                '}';
+        return "Libri: " + id + " - " + titulli + " ( " + autori + ") ISBN: " + isbn + " " + (rezervuar ? "Rezervuar" : "I disponueshem");
     }
 }

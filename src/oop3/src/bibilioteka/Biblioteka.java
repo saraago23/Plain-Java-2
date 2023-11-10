@@ -2,13 +2,14 @@ package oop3.src.bibilioteka;
 
 import java.util.List;
 
-public class Biblioteka extends ServiceLibri {
+public class Biblioteka {
 
     private List<Libri> librat;
-    private List<Perdoruesi> perdorues;
+    private List<Perdoruesi> perdoruesit;
 
-    public Biblioteka(List<Libri> librat){
-        this.librat=librat;
+    public Biblioteka(List<Libri> librat, List<Perdoruesi> perdoruesit) {
+        this.librat = librat;
+        this.perdoruesit = perdoruesit;
     }
 
     public List<Libri> getLibrat() {
@@ -19,13 +20,11 @@ public class Biblioteka extends ServiceLibri {
         this.librat = librat;
     }
 
-    public void addLibri(Libri libri){
-        this.librat.add(libri);
+    public List<Perdoruesi> getPerdoruesit() {
+        return perdoruesit;
     }
 
-    @Override
-    public String toString() {
-        return "Biblioteka{" +
-                "librat=" + librat ;
+    public void setPerdoruesit(List<Perdoruesi> perdoruesit) {
+        this.perdoruesit = perdoruesit;
     }
 }

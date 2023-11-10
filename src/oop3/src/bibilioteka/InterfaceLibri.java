@@ -1,13 +1,28 @@
 package oop3.src.bibilioteka;
 
+import oop3.src.bibilioteka.customExceptions.BibliotekaIsEmptyException;
+import oop3.src.bibilioteka.customExceptions.BookNotAvailableException;
+import oop3.src.bibilioteka.customExceptions.BookNotFoundException;
+
+import java.io.IOException;
+
 public interface InterfaceLibri {
 
-    public void shtoLiber(Biblioteka biblioteka, Libri libri);
-    public void fshiLiber(Biblioteka biblioteka, Libri libri);
-    public String kerkoLiberMeTitull(Biblioteka biblioteka, String titulli);
-    public String kerkoLiberMeAutor(Biblioteka biblioteka, String autori);
-    public boolean kerkoLiberMeIsbn(Biblioteka biblioteka, String isbn);
-    public void shfaqLibrat(Biblioteka biblioteka);
-    public String merrLiber(Biblioteka biblioteka, Perdoruesi perdoruesi, String isbn);
-    //public void ktheLiber(Biblioteka biblioteka, String isbn);
+    void shtoLiber(Biblioteka biblioteka, Libri libri);
+
+    void fshiLiber(Biblioteka biblioteka, Libri libri) throws BookNotFoundException;
+
+    String kerkoLiberMeTitull(Biblioteka biblioteka, String titulli) throws BookNotFoundException;
+
+    String kerkoLiberMeAutor(Biblioteka biblioteka, String autori) throws BookNotFoundException;
+
+    Libri kerkoLiberMeIsbn(Biblioteka biblioteka, String isbn);
+
+    void shfaqLibrat(Biblioteka biblioteka) throws BibliotekaIsEmptyException;
+
+    void shfaqPerdoruesit(Biblioteka biblioteka) throws BibliotekaIsEmptyException;
+
+    String merrLiber(Biblioteka biblioteka, Perdoruesi perdoruesi, String isbn) throws BookNotFoundException, BookNotAvailableException;
+
+    void ktheLiber(Biblioteka biblioteka, String isbn);
 }

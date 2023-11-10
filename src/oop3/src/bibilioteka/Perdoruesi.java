@@ -3,14 +3,14 @@ package oop3.src.bibilioteka;
 public class Perdoruesi {
 
     private int id;
-    private static int counter=0;
+    private static int counter = 0;
     private String emer;
     private String mbiemer;
 
-    public Perdoruesi(String emer, String mbiemer){
-        this.id=counter++;
-        this.emer=emer;
-        this.mbiemer=mbiemer;
+    public Perdoruesi(String emer, String mbiemer) {
+        this.id = counter++;
+        this.emer = emer;
+        this.mbiemer = mbiemer;
     }
 
     public String getEmer() {
@@ -39,10 +39,7 @@ public class Perdoruesi {
 
     @Override
     public String toString() {
-        return "Perdoruesi{" +
-                "id=" + id +
-                ", emer='" + emer + '\'' +
-                ", mbiemer='" + mbiemer + '\'' +
-                '}';
+        return "Perdoruesi: " + id +
+                " - " + emer + " " + mbiemer;
     }
 }
