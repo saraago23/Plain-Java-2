@@ -7,6 +7,8 @@ public class BookNotFoundException extends Exception{
         super("Libri nuk u gjend ");
     }
 
-
+    public BookNotFoundException(String message) {
+        super(message);
+    }
 
 }

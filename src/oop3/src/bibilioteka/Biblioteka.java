@@ -1,30 +1,24 @@
 package oop3.src.bibilioteka;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Biblioteka {
 
-    private List<Libri> librat;
-    private List<Perdoruesi> perdoruesit;
-
-    public Biblioteka(List<Libri> librat, List<Perdoruesi> perdoruesit) {
-        this.librat = librat;
-        this.perdoruesit = perdoruesit;
-    }
+    private List<Libri> librat=new ArrayList<>();
+    private List<Lexuesi> lexuesit=new ArrayList<>();
+    private List<Rezervim> rezervimet=new ArrayList<>();
 
     public List<Libri> getLibrat() {
         return librat;
     }
 
-    public void setLibrat(List<Libri> librat) {
-        this.librat = librat;
+    public List<Lexuesi> getLexuesit() {
+        return lexuesit;
     }
 
-    public List<Perdoruesi> getPerdoruesit() {
-        return perdoruesit;
+    public List<Rezervim> getRezervimet() {
+        return rezervimet;
     }
 
-    public void setPerdoruesit(List<Perdoruesi> perdoruesit) {
-        this.perdoruesit = perdoruesit;
-    }
 }

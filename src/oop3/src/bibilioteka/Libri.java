@@ -1,20 +1,23 @@
 package oop3.src.bibilioteka;
 
+import java.util.List;
+
 public class Libri {
 
     private int id;
     private static int counter = 0;
     private int idPerdorues;
     private String titulli;
-    private String autori;
+    private List<Autor> autoret;
     private String isbn;
     private int vitiBotimit;
-    boolean rezervuar;
+    private Zhaner zhaneriLibrit;
+    private boolean rezervuar;
 
-    public Libri(String titulli, String autori, String isbn, int vitiBotimit) {
+    public Libri(String titulli, List<Autor> autoret, String isbn, int vitiBotimit) {
         this.id = counter++;
         this.titulli = titulli;
-        this.autori = autori;
+        this.autoret = autoret;
         this.isbn = isbn;
         this.vitiBotimit = vitiBotimit;
     }
@@ -27,12 +30,12 @@ public class Libri {
         this.titulli = titulli;
     }
 
-    public String getAutori() {
-        return autori;
+    public List<Autor> getAutoret() {
+        return autoret;
     }
 
-    public void setAutori(String autori) {
-        this.autori = autori;
+    public void setAutoret(List<Autor> autoret) {
+        this.autoret = autoret;
     }
 
     public String getIsbn() {
@@ -75,9 +78,16 @@ public class Libri {
         this.rezervuar = rezervuar;
     }
 
+    public Zhaner getZhaneriLibrit() {
+        return zhaneriLibrit;
+    }
+
+    public void setZhaneriLibrit(Zhaner zhaneriLibrit) {
+        this.zhaneriLibrit = zhaneriLibrit;
+    }
 
     @Override
     public String toString() {
-        return "Libri: " + id + " - " + titulli + " ( " + autori + ") ISBN: " + isbn + " " + (rezervuar ? "Rezervuar" : "I disponueshem");
+        return id + " - " + titulli + " ( " + getAutoret() + ") ISBN: " + isbn + " " + (rezervuar ? "Rezervuar" : "I disponueshem");
     }
 }
