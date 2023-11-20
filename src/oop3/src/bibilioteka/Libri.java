@@ -14,12 +14,13 @@ public class Libri {
     private Zhaner zhaneriLibrit;
     private boolean rezervuar;
 
-    public Libri(String titulli, List<Autor> autoret, String isbn, int vitiBotimit) {
+    public Libri(String titulli, List<Autor> autoret, String isbn, int vitiBotimit, Zhaner zhaneriLibrit) {
         this.id = counter++;
         this.titulli = titulli;
         this.autoret = autoret;
         this.isbn = isbn;
         this.vitiBotimit = vitiBotimit;
+        this.zhaneriLibrit=zhaneriLibrit;
     }
 
     public String getTitulli() {

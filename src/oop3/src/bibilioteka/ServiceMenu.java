@@ -20,7 +20,6 @@ public class ServiceMenu implements Imenu {
         System.out.println("Lexuesi me id " + lexuesi + " u shtua me sukses!");
     }
 
-    //TODO Lexuesi mund te fshihet ne rastin kur i ka kthyer te gjithe librat
     @Override
     public void fshiLexues() {
         System.out.println("Vendosni emrin dhe mbiemrin e perdoruesit qe do te fshini");
@@ -29,8 +28,7 @@ public class ServiceMenu implements Imenu {
         String mbiemer = input.next();
         Lexuesi perTuFshire = null;
         for (Lexuesi lexuesi : biblioteka.getLexuesit()) {
-            if (emer.equalsIgnoreCase(lexuesi.getEmer()) &&
-                    mbiemer.equalsIgnoreCase(lexuesi.getMbiemer())) {
+            if (emer.equalsIgnoreCase(lexuesi.getEmer()) && mbiemer.equalsIgnoreCase(lexuesi.getMbiemer())) {
                 perTuFshire = lexuesi;
             }
         }
@@ -77,8 +75,34 @@ public class ServiceMenu implements Imenu {
         }
 
         List<Autor> autoretLibrit = vendosAutoret();
+        System.out.println("Vendos zhanerin e librit: ROMAN, FILOZOFI, BIOGRAFI, HISTORI, PSIKOLOGJI ");
+        String zhaneri = scanner.next().toUpperCase();
 
-        Libri libri = new Libri(titulli, autoretLibrit, isbn, vitProdhimi);
+        Zhaner zhaneriLibrit = null;
+
+        switch (zhaneri) {
+            case "ROMAN":
+                zhaneriLibrit = Zhaner.ROMAN;
+                break;
+            case "FILOZOFI":
+                zhaneriLibrit = Zhaner.FILOZOFI;
+                break;
+            case "BIOGRAFI":
+                zhaneriLibrit = Zhaner.BIOGRAFI;
+                break;
+            case "HISTORI":
+                zhaneriLibrit = Zhaner.HISTORI;
+                break;
+            case "PSIKOLOGJI":
+                zhaneriLibrit = Zhaner.PSIKOLOGJI;
+                break;
+            default:
+                System.out.println("Ju nuk keni vendosur nje nga zhaner-at e mesiperm");
+        }
+
+
+        Libri libri = new Libri(titulli, autoretLibrit, isbn, vitProdhimi, zhaneriLibrit);
+
         biblioteka.getLibrat().add(libri);
 
         System.out.println("Ne biblioteke u shtua libri: " + libri);
@@ -241,27 +265,42 @@ public class ServiceMenu implements Imenu {
         if (isbn.length() != 13) {
             throw new NotValidException("ISBN-ja nuk ka format te sakte!");
         }
-        Libri libri = kerkoLiberMeIsbn(isbn);
-        if (libri == null) {
-            throw new BookNotFoundException("Libri me ISBN: " + isbn + " nuk u gjet!");
+
+        boolean kaloiLimitin = false;
+        int counter = 0;
+        for (Rezervim r : biblioteka.getRezervimet()) {
+            if (r.getLexuesi().equals(lexuesiPerRezervim)) {
+               counter++;
+            }
+            if (r.getLibri().getIsbn().equals(isbn) && counter > 3) {
+                kaloiLimitin = true;
+            }
         }
-        if (libri.isRezervuar()) {
-            throw new NotValidException("Libri me ISBN: " + isbn + " per momentin eshte i rezervuar!");
+        if (kaloiLimitin) {
+            System.out.println("Ju nuk mund ta rezervoni kete liber per te katerten here");
+        } else {
+            Libri libri = kerkoLiberMeIsbn(isbn);
+            if (libri == null) {
+                throw new BookNotFoundException("Libri me ISBN: " + isbn + " nuk u gjet!");
+            }
+            if (libri.isRezervuar()) {
+                throw new NotValidException("Libri me ISBN: " + isbn + " per momentin eshte i rezervuar!");
+            }
+
+            Rezervim rezervim = new Rezervim();
+            rezervim.setLexuesi(lexuesiPerRezervim);
+            rezervim.setLibri(libri);
+            rezervim.setDataMarrjes(LocalDateTime.now());
+            biblioteka.getRezervimet().add(rezervim);
+
+            libri.setRezervuar(true);
+
+            if (libri.isRezervuar()) {
+                System.out.println("Libri: " + libri.getTitulli() + " - " + libri.getIsbn() + " u rezervua me sukses nga: " + lexuesiPerRezervim.getEmer() + " " + lexuesiPerRezervim.getMbiemer() + " ne daten: " + rezervim.getDataMarrjes());
+            }
         }
-
-        Rezervim rezervim = new Rezervim();
-        rezervim.setLexuesi(lexuesiPerRezervim);
-        rezervim.setLibri(libri);
-        rezervim.setDataMarrjes(LocalDateTime.now());
-        biblioteka.getRezervimet().add(rezervim);
-
-        libri.setRezervuar(true);
-
-        System.out.println("Libri: " + libri.getTitulli() + " - " + libri.getIsbn() + " u rezervua me sukses nga: "
-                + lexuesiPerRezervim.getEmer() + " " + lexuesiPerRezervim.getMbiemer() + " ne daten: " + rezervim.getDataMarrjes());
 
     }
-
 
     public void ktheLiber() throws NotValidException, BookNotFoundException, ReaderNotFoundException, ReservationNotFoundException {
         Scanner scanner = new Scanner(System.in);
@@ -305,8 +344,7 @@ public class ServiceMenu implements Imenu {
 
         libri.setRezervuar(false);
         rezervim.setDataKthimit(LocalDateTime.now());
-        System.out.println("Libri: " + libri.getTitulli() + " u kthye me sukses nga: " + lexuesiPerKthim.getEmer() + " ne daten: " +
-                rezervim.getDataKthimit());
+        System.out.println("Libri: " + libri.getTitulli() + " u kthye me sukses nga: " + lexuesiPerKthim.getEmer() + " ne daten: " + rezervim.getDataKthimit());
 
     }
 
@@ -396,7 +434,6 @@ public class ServiceMenu implements Imenu {
             throw new ReaderNotFoundException("Lexuesi: " + emer + " " + mbiemer + " nuk u gjet ne sistemin e bibliotekes");
         }
 
-
         List<Libri> libratLexuesit = new ArrayList<>();
         for (Rezervim r : biblioteka.getRezervimet()) {
             if (r.getLexuesi().equals(lexuesi)) {
@@ -410,7 +447,7 @@ public class ServiceMenu implements Imenu {
 
         System.out.println("Librat qe ka lexuar lexuesi:" + emer + " " + mbiemer);
         for (int i = 1; i <= libratLexuesit.size(); i++) {
-            System.out.println(i + "." + libratLexuesit.get(i-1).getTitulli());
+            System.out.println(i + "." + libratLexuesit.get(i - 1).getTitulli());
         }
     }
 
@@ -425,37 +462,219 @@ public class ServiceMenu implements Imenu {
     }
 
     @Override
-    public List<Libri> ktheLexuesitElibrit(String titulliLibrit) {
-        return null;
-    }
+    public void ktheLexuesitElibrit() {
+        System.out.println("Vendosni titullin e librit: ");
+        Scanner scanner = new Scanner(System.in);
+        String titulli = scanner.nextLine();
+        List<Lexuesi> lexuesit = new ArrayList<>();
 
-    @Override
-    public Zhaner ktheZhanerinMeTeLexuar(Biblioteka biblioteka) {
-        return null;
-    }
-
-    @Override
-    public List<Libri> ktheLibratPerZhaner(Zhaner zhaner) {
-        return null;
-    }
-
-    @Override
-    public Autor ktheAutorinQeKaShkruarMeShumeLibra(Biblioteka biblioteka) {
-        return null;
-    }
-
-    @Override
-    public Autor ktheAutorinMeTeLexuar(Biblioteka biblioteka) {
-        return null;
-    }
-
-    @Override
-    public void shfaqLibrat(Biblioteka biblioteka)  {
+        for (Libri l : biblioteka.getLibrat()) {
+            if (l.getTitulli().equalsIgnoreCase(titulli)) {
+                for (Rezervim r : biblioteka.getRezervimet()) {
+                    if (r.getLibri().equals(l)) {
+                        lexuesit.add(r.getLexuesi());
+                    }
+                }
+            } else {
+                System.out.println("Libri me titull: " + titulli + " nuk ndodhet ne biblioteke");
+            }
+        }
+        System.out.println("Lexuesit per titullin: " + titulli + " jane: " + lexuesit);
 
     }
 
     @Override
-    public void shfaqPerdoruesit(Biblioteka biblioteka)  {
+    public void ktheZhanerinMeTeLexuar() throws ReaderNotFoundException, ReservationNotFoundException {
+        if (biblioteka.getLexuesit().isEmpty()) {
+            throw new ReaderNotFoundException("Ne biblioteke nuk ka asnje lexues te regjistruar");
+        }
+        if (biblioteka.getRezervimet().isEmpty()) {
+            throw new ReservationNotFoundException("Nuk eshte marre asnje rezervim ne biblioteke");
+        }
+        List<Zhaner> zhanerat = new ArrayList<>();
+        Map<Zhaner, Integer> zhaneriMeIlexuar = new HashMap<>();
+        int max = Integer.MIN_VALUE;
+        Zhaner zhaneri = null;
+
+        for (Libri l : biblioteka.getLibrat()) {
+            zhanerat.add(l.getZhaneriLibrit());
+        }
+
+        for (Zhaner zh : zhanerat) {
+            if (!(zhaneriMeIlexuar.containsKey(zh))) {
+                zhaneriMeIlexuar.put(zh, 1);
+            } else {
+                zhaneriMeIlexuar.put(zh, zhaneriMeIlexuar.get(zh) + 1);
+            }
+        }
+        for (Map.Entry<Zhaner, Integer> m : zhaneriMeIlexuar.entrySet()) {
+            if (m.getValue() > max) {
+                max = m.getValue();
+                zhaneri = m.getKey();
+            }
+        }
+        System.out.println("Zhaneri me i lexuar eshte: " + zhaneri);
+    }
+
+    @Override
+    public void ktheLibratPerZhaner() throws BookNotFoundException {
+        if (biblioteka.getLibrat().isEmpty()) {
+            throw new BookNotFoundException("Nuk ka asnje liber ne biblioteke");
+        }
+        System.out.println("Vendos zhanerin e librit: ROMAN, FILOZOFI, BIOGRAFI, HISTORI, PSIKOLOGJI ");
+        Scanner scanner = new Scanner(System.in);
+        String zhaneri = scanner.next().toUpperCase();
+        Map<Zhaner, List<Libri>> libraPerZhaner = new HashMap<>();
+
+
+        for (Libri l : biblioteka.getLibrat()) {
+            if (!(libraPerZhaner.containsKey(l.getZhaneriLibrit()))) {
+                List<Libri> librat = new ArrayList<>();
+                librat.add(l);
+                libraPerZhaner.put(l.getZhaneriLibrit(), librat);
+            } else {
+                List<Libri> libratEkzistues = libraPerZhaner.get(l.getZhaneriLibrit());
+                libratEkzistues.add(l);
+                libraPerZhaner.put(l.getZhaneriLibrit(), libratEkzistues);
+
+            }
+        }
+
+        Zhaner zhaneriLibrit = null;
+        switch (zhaneri) {
+            case "ROMAN":
+                zhaneriLibrit = Zhaner.ROMAN;
+                for (Map.Entry<Zhaner, List<Libri>> m : libraPerZhaner.entrySet()) {
+                    if (zhaneriLibrit.equals(m.getKey())) {
+                        System.out.println(m.getKey());
+                        System.out.print(" " + m.getValue());
+                    }
+                }
+                break;
+            case "FILOZOFI":
+                zhaneriLibrit = Zhaner.FILOZOFI;
+                for (Map.Entry<Zhaner, List<Libri>> m : libraPerZhaner.entrySet()) {
+                    if (zhaneriLibrit.equals(m.getKey())) {
+                        System.out.println(m.getKey());
+                        System.out.print(" " + m.getValue());
+                    }
+                }
+                break;
+            case "BIOGRAFI":
+                zhaneriLibrit = Zhaner.BIOGRAFI;
+                for (Map.Entry<Zhaner, List<Libri>> m : libraPerZhaner.entrySet()) {
+                    if (zhaneriLibrit.equals(m.getKey())) {
+                        System.out.println(m.getKey());
+                        System.out.print(" " + m.getValue());
+                    }
+                }
+                break;
+            case "HISTORI":
+                zhaneriLibrit = Zhaner.HISTORI;
+                for (Map.Entry<Zhaner, List<Libri>> m : libraPerZhaner.entrySet()) {
+                    if (zhaneriLibrit.equals(m.getKey())) {
+                        System.out.println(m.getKey());
+                        System.out.print(" " + m.getValue());
+                    }
+                }
+                break;
+            case "PSIKOLOGJI":
+                zhaneriLibrit = Zhaner.PSIKOLOGJI;
+                for (Map.Entry<Zhaner, List<Libri>> m : libraPerZhaner.entrySet()) {
+                    if (zhaneriLibrit.equals(m.getKey())) {
+                        System.out.println(m.getKey());
+                        System.out.print(" " + m.getValue());
+                    }
+                }
+                break;
+            default:
+                System.out.println("Ju nuk keni vendosur nje nga zhaner-at e mesiperm");
+        }
+    }
+
+    @Override
+    public void ktheAutorinQeKaShkruarMeShumeLibra() throws BookNotFoundException {
+        if (biblioteka.getLibrat().isEmpty()) {
+            throw new BookNotFoundException("Ne biblioteke nuk ka asnje liber");
+        }
+
+        Map<Autor, Integer> libraPerAutore = new HashMap<>();
+        List<Libri> librat = new ArrayList<>();
+        List<Autor> autoret = new ArrayList<>();
+        int max = Integer.MIN_VALUE;
+
+        for (Libri l : biblioteka.getLibrat()) {
+            for (Autor a : l.getAutoret()) {
+                autoret.add(a);
+                librat.add(l);
+            }
+        }
+        for (Autor a : autoret) {
+            if (libraPerAutore.containsKey(a)) {
+                libraPerAutore.put(a, libraPerAutore.get(a) + 1);
+            } else {
+                libraPerAutore.put(a, 1);
+            }
+        }
+        Autor autori = null;
+        for (Map.Entry<Autor, Integer> m : libraPerAutore.entrySet()) {
+            if (m.getValue() > max) {
+                max = m.getValue();
+                autori = m.getKey();
+            }
+        }
+        System.out.println("Autori qe ka shkruar me shume " + "libra eshte: " + autori + " me " + max + " libra");
+    }
+
+    @Override
+    public void ktheAutorinMeTeLexuar() throws BookNotFoundException {
+        Map<Autor, Integer> autoret = new HashMap<>();
+        int max = Integer.MIN_VALUE;
+        for (Rezervim r : biblioteka.getRezervimet()) {
+            for (Libri l : biblioteka.getLibrat()) {
+                for (Autor a : l.getAutoret()) {
+                    if (!(autoret.containsKey(a))) {
+                        autoret.put(a, 1);
+                    } else {
+                        autoret.put(a, autoret.get(a) + 1);
+                    }
+                }
+            }
+        }
+        Autor autori = null;
+
+        for (Map.Entry<Autor, Integer> m : autoret.entrySet()) {
+            if (m.getValue() > max) {
+                max = m.getValue();
+                autori = m.getKey();
+            }
+        }
+        if (autori != null) {
+            System.out.println("Autori me i lexuar eshte: " + autori.getEmer() + " " + autori.getMbiemer());
+        } else {
+            throw new BookNotFoundException("Nuk ka libra ne biblioteke");
+        }
+    }
+
+    @Override
+    public void shfaqLibrat() throws BookNotFoundException {
+        if (biblioteka.getLibrat().isEmpty()) {
+            throw new BookNotFoundException("Nuk ka asnje liber per te shfaqur ne biblioteke");
+        }
+        for (Libri l : biblioteka.getLibrat()) {
+            System.out.println(l);
+        }
+
+    }
+
+    @Override
+    public void shfaqPerdoruesit() throws ReaderNotFoundException {
+        if (biblioteka.getLexuesit().isEmpty()) {
+            throw new ReaderNotFoundException("Nuk ka asnje lexues ne sistemin e bibliotekes");
+        }
+        for (Lexuesi l : biblioteka.getLexuesit()) {
+            System.out.println(l);
+        }
 
     }
 }

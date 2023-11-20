@@ -2,22 +2,19 @@ package oop3.src.bibilioteka;
 
 public enum Zhaner {
 
-	ROMAN("Roman", 1500), FILOZOFI("Filozofi", 1700), BIOGRAFI("Biografi", 1750), HISTORI("Histori", 1800),
-	PSIKOLOGJI("Psikologji", 2000);
+	ROMAN("Roman"), FILOZOFI("Filozofi"), BIOGRAFI("Biografi"), HISTORI("Histori"),
+	PSIKOLOGJI("Psikologji");
 
-	private String titulli;
-	private int vitLindje;
+	private final String titulli;
 
-	Zhaner(String titulli, int vitLindje) {
+	Zhaner(String titulli) {
 		this.titulli = titulli;
-		this.vitLindje = vitLindje;
+
 	}
 
 	public String getTitulli() {
-		return this.titulli;
+		return titulli;
 	}
 
-	public int getVitLindje() {
-		return this.vitLindje;
-	}
+
 }

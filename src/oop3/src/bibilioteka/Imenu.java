@@ -28,19 +28,19 @@ public interface Imenu {
 
     void ktheLibratQeKaLexuarPersoni() throws ReaderNotFoundException, BookNotFoundException;
 
-    List<Libri> ktheLexuesitElibrit(String titulliLibrit);
+    void ktheLexuesitElibrit();
 
-    Zhaner ktheZhanerinMeTeLexuar(Biblioteka biblioteka);
+    void ktheZhanerinMeTeLexuar() throws ReaderNotFoundException, ReservationNotFoundException;
 
-    List<Libri> ktheLibratPerZhaner(Zhaner zhaner);
+    void ktheLibratPerZhaner() throws BookNotFoundException;
 
-    Autor ktheAutorinQeKaShkruarMeShumeLibra(Biblioteka biblioteka);
+    void ktheAutorinQeKaShkruarMeShumeLibra() throws BookNotFoundException;
 
-    Autor ktheAutorinMeTeLexuar(Biblioteka biblioteka);
+    void ktheAutorinMeTeLexuar() throws BookNotFoundException;
 
-    void shfaqLibrat(Biblioteka biblioteka) throws BibliotekaIsEmptyException;
+    void shfaqLibrat() throws BibliotekaIsEmptyException, BookNotFoundException;
 
-    void shfaqPerdoruesit(Biblioteka biblioteka) throws BibliotekaIsEmptyException;
+    void shfaqPerdoruesit() throws BibliotekaIsEmptyException, ReaderNotFoundException;
 
 }
 

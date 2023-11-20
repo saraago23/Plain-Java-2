@@ -146,6 +146,8 @@ public class Main {
             System.out.println("14.Librat per zhaner");
             System.out.println("15.Autori qe ka shkruar me shume libra");
             System.out.println("16.Autori me i lexuar");
+            System.out.println("17.Shfaq librat");
+            System.out.println("18.Shfaq perdoruesit");
             System.out.println("Cdo gje tjeter per te mbyllur aplikacionin!");
 
             System.out.println("Shtypni numrin per sherbimin qe deshironi te kryeni: ");
@@ -236,19 +238,56 @@ public class Main {
                     }
                     break;
                 case "12":
-                    System.out.println("Ju zgjodhet opsionin 12!");
+                    System.out.println("Ju zgjodhet opsionin 12.Lista e lexuesve te librit me nje titull te caktuar!");
+                    serviceMenu.ktheLexuesitElibrit();
                     break;
                 case "13":
-                    System.out.println("Ju zgjodhet opsionin 13!");
+                    System.out.println("Ju zgjodhet opsionin 13.Zhaneri me i lexuar!");
+                    try {
+                        serviceMenu.ktheZhanerinMeTeLexuar();
+                    } catch (ReaderNotFoundException | ReservationNotFoundException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case "14":
-                    System.out.println("Ju zgjodhet opsionin 14!");
+                    System.out.println("Ju zgjodhet opsionin 14.Librat per zhaner!");
+                    try {
+                        serviceMenu.ktheLibratPerZhaner();
+                    } catch (BookNotFoundException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case "15":
-                    System.out.println("Ju zgjodhet opsionin 15!");
+                    System.out.println("Ju zgjodhet opsionin 15.Autori qe ka shkruar me shume libra!");
+                    try {
+                        serviceMenu.ktheAutorinQeKaShkruarMeShumeLibra();
+                    } catch (BookNotFoundException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case "16":
-                    System.out.println("Ju zgjodhet opsionin 16!");
+                    System.out.println("Ju zgjodhet opsionin 16.Autori me i lexuar!");
+                    try {
+                        serviceMenu.ktheAutorinMeTeLexuar();
+                    } catch (BookNotFoundException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case"17":
+                    System.out.println("Ju zgjodhet opsionin 17.Shfaq librat!");
+                    try {
+                        serviceMenu.shfaqLibrat();
+                    } catch (BibliotekaIsEmptyException | BookNotFoundException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case"18":
+                    System.out.println("Ju zgjodhet opsionin 18.Shfaq perdoruesit!");
+                    try {
+                        serviceMenu.shfaqPerdoruesit();
+                    } catch (BibliotekaIsEmptyException | ReaderNotFoundException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 default:
                     System.out.println("Faleminderit qe perdoret sherbimet tona!");
