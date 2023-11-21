@@ -269,11 +269,15 @@ public class ServiceMenu implements Imenu {
         boolean kaloiLimitin = false;
         int counter = 0;
         for (Rezervim r : biblioteka.getRezervimet()) {
-            if (r.getLexuesi().equals(lexuesiPerRezervim)) {
-               counter++;
-            }
-            if (r.getLibri().getIsbn().equals(isbn) && counter > 3) {
-                kaloiLimitin = true;
+            if (r.getLibri().getIsbn().equals(isbn)) {
+                if (r.getLexuesi().equals(lexuesiPerRezervim)) {
+                    counter++;
+                    if (counter > 3) {
+                        kaloiLimitin = true;
+                    }
+
+                }
+
             }
         }
         if (kaloiLimitin) {
