@@ -1,0 +1,64 @@
+1.
+
+SELECT *
+FROM city 
+WHERE countrycode LIKE 'USA' AND population> 100.000;
+
+2.
+SELECT name
+FROM city 
+WHERE countrycode LIKE 'USA' AND population> 120.000;
+
+3.
+SELECT * 
+FROM city
+WHERE ID=1661;
+
+4.1
+SELECT CONCAT(name, '(', SUBSTRING(occupation,1,1), ')' ) AS persons_occupations
+FROM occupations
+ORDER BY name;
+
+4.2
+
+SELECT 
+    CONCAT('There are a total of ',
+            COUNT(*),
+            ' ',
+            LOWER(occupation),
+            '/s.')
+FROM
+    person
+GROUP BY occupation
+
+
+5.
+SELECT 
+    c.*,
+    COUNT(DISTINCT(l.lead_manager_code)) AS lead_manager_count,
+    COUNT(DISTINCT(s.senior_manager_code)) As senior_manager_count,
+    COUNT(DISTINCT(m.manager_code)) as manager_count,
+    COUNT(DISTINCT(e.employee_code)) as employee_count
+FROM    company c
+        JOIN    lead_manager l ON c.company_code = l.company_code
+        JOIN    senior_manager s ON c.company_code = s.company_code
+        JOIN    manager m ON c.company_code = m.company_code
+        JOIN    employee e ON c.company_code = e.company_code
+GROUP BY c.company_code , c.founder;
+
+
+6.
+SELECT CEIL(AVG(salary)-AVG(REPLACE(salary, 0, ''))) AS gabimi
+FROM employees
+
+7.
+
+SELECT  months * salary AS max_earnings, COUNT(*) AS employee_count
+FROM employee
+GROUP BY max_earnings
+ORDER BY max_earnings DESC
+LIMIT 1;
+
+
+
+

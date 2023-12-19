@@ -1,0 +1,120 @@
+CREATE TABLE author(
+full_name VARCHAR(255),
+id INT PRIMARY KEY
+);
+
+CREATE TABLE book(
+copies_sold INT,
+id INT PRIMARY KEY
+);
+
+CREATE TABLE author_book (
+    book_id INT,
+    author_id INT,
+    PRIMARY KEY(book_id, author_id),
+    FOREIGN KEY (author_id) REFERENCES author(id),
+    FOREIGN KEY (book_id) REFERENCES book(id)
+);
+
+INSERT INTO author(full_name,id)
+VALUES('Viktor Hygo', 1);
+
+INSERT INTO author(full_name,id)
+VALUES('iSMAIL Kadare', 2);
+
+INSERT INTO book(copies_sold,id)
+VALUES(3, 1);
+INSERT INTO book(copies_sold,id)
+VALUES(2, 2);
+INSERT INTO book(copies_sold,id)
+VALUES(4, 3);
+
+
+INSERT INTO author_book(book_id,author_id)
+VALUES(1,1 );
+
+INSERT INTO author_book(book_id,author_id)
+VALUES(2,2 );
+INSERT INTO author_book(book_id,author_id)
+VALUES(3,1 );
+
+# 1) Gjej autorin me me shume kopje te shitura
+
+SELECT a.full_name,sum(b.copies_sold) AS total_copies_sold
+FROM author a 
+JOIN author_book ab ON a.id=ab.author_id
+JOIN book b ON b.id=ab.book_id
+GROUP BY a.full_name
+ORDER BY total_copies_sold DESC
+LIMIT 1 ;
+
+# 2) Gjej 5 autoret me me shume kopje te shitura
+
+SELECT a.full_name,sum(b.copies_sold) AS total_copies_sold
+FROM author a 
+JOIN author_book ab ON a.id=ab.author_id
+JOIN book b ON b.id=ab.book_id
+GROUP BY a.full_name
+ORDER BY sum(b.copies_sold) DESC
+LIMIT 5 ;
+
+# 3) Gjej numrin total te faqeve te shkruara nga nje autor
+
+SELECT a.full_name, sum(b.n_pages) AS total_pages_number
+FROM author a 
+JOIN author_book ab ON a.id=ab.author_id
+JOIN book b ON b.id=ab.book_id
+GROUP BY a.full_name;
+
+# 4) Gjej numrin e faqeve te shkruara ne varesi te cdo viti # qe kemi prezent
+
+SELECT b.year, sum(b.n_pages) AS total_pages_number
+FROM book b
+GROUP BY b.year;
+
+# 5) Gjej autorin me fitimin me te madh
+
+SELECT a.full_name, sum( b.copies_sold * b.price)
+FROM author a 
+JOIN author_book ab ON ab.author_id=a.id
+JOIN book b ON b.id=ab.book_id
+GROUP BY a.full_name;
+
+# 6) Gjej librin me fitimin me te madh
+
+SELECT id,title,copies_sold*price AS profit
+FROM book
+ORDER BY profit DESC
+LIMIT 1;
+
+# 7) Gjej 10 librat me cmimin me te larte
+
+SELECT *  
+FROM book
+ORDER BY price DESC
+LIMIT 10;
+
+# 8) Gjej cmimin mesatar te librave per cdo vit
+
+SELECT year, avg(price)
+FROM book
+GROUP BY year;
+
+# 9) Gjeni librat qe kane me shume sesa 1 autor
+
+SELECT title, count(title) 
+FROM book b 
+JOIN author_book ab ON b.id=ab.book_id
+GROUP BY title
+HAVING count(title)>1;
+
+#10) Nder librat qe kane me shume sesa 1 autor 
+# gjeni 5 librat me cmimin me te larte
+
+SELECT title,price, count(title) 
+FROM book b 
+JOIN author_book ab ON b.id=ab.book_id
+GROUP BY title,price
+HAVING count(title)>1
+ORDER BY price DESC
+LIMIT 5;

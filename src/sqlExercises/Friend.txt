@@ -1,0 +1,58 @@
+CREATE TABLE students(
+ID INT PRIMARY KEY,
+name VARCHAR(20)
+);
+
+CREATE TABLE packages(
+ID INT,
+salary FLOAT,
+FOREIGN KEY (ID) REFERENCES students(ID)
+);
+
+CREATE TABLE friends(
+ID INT,
+friend_id INT,
+FOREIGN KEY (ID) REFERENCES students(ID),
+FOREIGN KEY (friend_id) REFERENCES students(ID)
+);
+
+INSERT INTO students(ID,name)
+VALUES(1,'Ashley');
+INSERT INTO students(ID,name)
+VALUES(2,'Samantha');
+INSERT INTO students(ID,name)
+VALUES(3,'Julia');
+INSERT INTO students(ID,name)
+VALUES(4,'Scarlet');
+
+INSERT INTO packages(ID,salary)
+VALUES(1,15.20);
+INSERT INTO packages(ID,salary)
+VALUES(2,10.06);
+INSERT INTO packages(ID,salary)
+VALUES(3,11.55);
+INSERT INTO packages(ID,salary)
+VALUES(4,12.12);
+
+
+INSERT INTO friends(ID,friend_id)
+VALUES(1,2);
+INSERT INTO friends(ID,friend_id)
+VALUES(2,3);
+INSERT INTO friends(ID,friend_id)
+VALUES(3,4);
+INSERT INTO friends(ID,friend_id)
+VALUES(4,1);
+
+
+
+#Write a query to output the names of those students whose best friends got offered a higher salary than 
+them. Names must be ordered by the salary amount offered to the best friends. It is guaranteed that no 
+two students got same salary offer. 
+
+SELECT st.name
+FROM friends f 
+JOIN students st ON st.ID=f.ID
+JOIN packages p ON p.ID= f.friend_id
+JOIN packages pa ON pa.ID= f.ID
+WHERE p.salary>pa.salary;
